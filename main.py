@@ -9,51 +9,47 @@ while True:
         with open("data.txt", "a") as file:
             name = input("Enter student name: ")
             age = input("Enter student age: ")
-            file.write(f"\n{name}, {age}")
+            file.write(f"{name}, {age}\n")
 
     elif choice == 3:
         with open("data.txt", "r") as file:
             lines = file.readlines()
 
-        ubdate_name = input("search update name: ")
-        ubdate_age = input("search update age: ")
+        update_name = input("Search update name: ")
         new_name = input("Enter new name: ")
         new_age = input("Enter new age: ")
+        new_lines = []
 
-        for i in range(len(lines)):
-            if lines[i].strip():
-                name, age = lines[i].strip().split(",")
-                if ubdate_name == name.strip() and ubdate_age == age.strip():
-                    lines[i] = f"{new_name}, {new_age}\n" 
-                    break
+        for line in lines:
+            name, age = line.split(",")
+            if update_name == name.strip():
+                new_lines.append(f"{new_name}, {new_age}\n")
+            else:
+                new_lines.append(line)
         else:
-            print("invalid name")
+            print("Student not found.")
 
         with open("data.txt", "w") as file:
-            file.writelines(lines)
+            file.writelines(new_lines)
 
     elif choice == 4:
         with open("data.txt", "r") as file:
             lines = file.readlines()
 
-        student_name = input("enter student name to delete: ")
-        student_age = input("enter student age to delete: ")
-        for i in range(len(lines)):
-            if lines[i].strip():
-                name, age = lines[i].strip().split(",")
-                if student_name == name.strip() and student_age == age.strip():
-                    remove = lines.pop(i)
-                    print(f"deleted: {remove.strip()}")
-                    break
-        else:
-            print("invalid name")
-
+        student_name = input("Enter student name to delete: ")
+        new_lines = []
         with open("data.txt", "w") as file:
-            file.writelines(lines)
+
+            for line in lines:
+                name, age = line.split(",")
+                if not line.startswith(f"{student_name}"):
+                    file.write(line) 
+                else:
+                    new_lines.append(line)
 
     elif choice == 5:
         print("Goodbye!")
         break
 
     else:
-        print("Invalid choice. Please enter 1-5.")
+        print("Invalid choice")
